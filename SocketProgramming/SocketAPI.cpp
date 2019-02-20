@@ -2,13 +2,14 @@
 #include <assert.h>
 #include <sys/errno.h>
 #include <string>
+#include <cstring>
 
 #include <sys/socket.h> 
 #include <netinet/in.h> 
 #include <arpa/inet.h>
 #include <ifaddrs.h> // getIP
 
-#define PORT 9007
+#define PORT 9048
 
 using namespace std;
 
@@ -85,16 +86,22 @@ void server(){
         assert(false);
     }
 
+
     // listen and accept a connection
     cout << "Listening..." << endl;
     int new_socket = accept(sockid, sa, &addrlen);
+    if (new_socket == -1){
+        cout << strerror(errno) << endl;
+        assert(false);
+    }
     cout << "Connected!" << endl;
 
     // send a msg
     string msg;
-    cout << "Message to send: ";
-    cin >> msg;
-    int send_status = send(sockid, &msg, sizeof(msg), 0);
+    cout << "Message to send: " << endl;
+    cin.ignore();
+    getline(cin, msg);
+    int send_status = send(new_socket, &msg, msg.length()+1, 0);
     if (send_status == -1){
         cout << strerror(errno) << endl;
         assert(false);
