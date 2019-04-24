@@ -1,4 +1,9 @@
 # Oct 2018
+# 
+# TODO:
+# - Use dynamic programming: T[game_board] = [#wins, #ties, #loses]
+#
+
 import random
 
 def playTurn(game):
